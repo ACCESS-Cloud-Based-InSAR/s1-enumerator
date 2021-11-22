@@ -1,0 +1,28 @@
+name: s1-enumerator
+channels:
+  - conda-forge
+dependencies:
+  - python=>3.8
+  # For packaging, and testing
+  - flake8
+  - flake8-import-order
+  - flake8-blind-except
+  - flake8-builtins
+  - setuptools
+  - setuptools_scm
+  - wheel
+  - pytest
+  - pytest-console-scripts
+  - pytest-cov
+  # For running
+  - importlib_metadata
+  # jupyter
+  - jupyter
+  - ipykernel
+  # gis
+  - rasterio
+  - geopandas
+  - tqdm
+  - requests
+  - asf_search
+
