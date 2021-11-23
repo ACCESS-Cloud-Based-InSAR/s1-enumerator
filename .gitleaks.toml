@@ -1,0 +1,29 @@
+
+title = "gitleaks config"
+[[rules]]
+    description = "AWS Manager ID"
+    regex = '''(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}'''
+    tags = ["key", "AWS"]
+[[rules]]
+    description = "AWS Secret Key"
+    regex = '''(?i)aws(.{0,20})?(?-i)[0-9a-zA-Z\/+]{40}'''
+    tags = ["key", "AWS"]
+[[rules]]
+    description = "AWS MWS key"
+    regex = '''amzn\.mws\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'''
+    tags = ["key", "AWS", "MWS"]
+[[rules]]
+    description = "Github"
+    regex = '''(?i)github(.{0,20})?(?-i)[0-9a-zA-Z]{35,40}'''
+    tags = ["key", "Github"]
+[[rules]]
+    description = "Asymmetric Private Key"
+    regex = '''-----BEGIN ((EC|PGP|DSA|RSA|OPENSSH) )?PRIVATE KEY( BLOCK)?-----'''
+    tags = ["key", "AsymmetricPrivateKey"]
+[[rules]]
+    description = "Generic Credential"
+    regex = '''(?i)(api_key|apikey|secret|password|pass|pw|key)(.{0,20})?[0-9a-zA-Z]{16,45}'''
+    tags = ["key", "API", "generic"]
+    [[rules.whitelist]]
+        regex = '''KeyChecking.no.*'''
+        description = "Ignore ssh settings for GitLab tools-bot"
