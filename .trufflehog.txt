@@ -1,2 +1,2 @@
-*gitleaks.toml$
+.*gitleaks.toml$
 CHANGELOG.md
