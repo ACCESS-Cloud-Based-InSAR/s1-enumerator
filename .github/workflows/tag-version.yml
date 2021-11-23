@@ -42,5 +42,5 @@ jobs:
       - name: Tag version
         uses: ASFHyP3/actions/bump-version@main
         with:
-          user: tools-bot
-          email: UAF-asf-apd@alaska.edu
+          user: access-cloud-insar-team
+          email: access-cloud-insar-team@jpl.nasa.gov
