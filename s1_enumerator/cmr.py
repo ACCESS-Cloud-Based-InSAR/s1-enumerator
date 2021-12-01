@@ -33,8 +33,9 @@ def approximate_cmr_lookup(reference_date: str,
     df['secondary_date_str'] = df.sceneName.map(extract_secondary_date)
 
     # Calculating areas in lat/lon coordinates prompts shapely warning
-    warnings.filterwarnings("ignore", category=UserWarning)
-    df['percent_intersection'] = df.geometry.intersection(geometry).area / geometry.area
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=UserWarning)
+        df['percent_intersection'] = df.geometry.intersection(geometry).area / geometry.area
 
     i0 = (df.start_date_str == reference_date)
     i1 = (df.secondary_date_str == secondary_date)
