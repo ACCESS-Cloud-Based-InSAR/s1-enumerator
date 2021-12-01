@@ -27,7 +27,7 @@ setup(
     ],
     python_requires='~=3.8',
     install_requires=[
-        'geopandas', 'rasterio',
+        'geopandas', 'rasterio', 'asf_search', 'tqdm', 'requests'
     ],
 
     extras_require={

@@ -36,7 +36,5 @@ jobs:
       - name: Pytest in conda environment
         shell: bash -l {0}
         run: |
-          python -m pip install pytest
           python -m pip install .
-          cd tests
           pytest .
