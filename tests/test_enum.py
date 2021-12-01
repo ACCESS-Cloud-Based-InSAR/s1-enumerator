@@ -12,7 +12,7 @@ enum_dir = data_dir / 'enum_data'
 aoi_dir = data_dir / 'aoi'
 
 
-@pytest.mark.parametrize("aoi_name", ['aleutian', 'turkey', 'haiti', 'los_paredes_ca'])
+@pytest.mark.parametrize("aoi_name", ['aleutian', 'turkey', 'haiti', 'los_padres_ca'])
 @pytest.mark.parametrize("enumeration_type", ['tile', 'path'])
 def test_enum_annual(enumeration_type, aoi_name):
     aoi_path = aoi_dir / f'{aoi_name}.geojson'
@@ -42,7 +42,7 @@ def test_enum_annual(enumeration_type, aoi_name):
 
 
 @pytest.mark.parametrize("enumeration_type", ['tile', 'path'])
-@pytest.mark.parametrize("aoi_name", ['los_paredes_ca'])
+@pytest.mark.parametrize("aoi_name", ['los_padres_ca'])
 @pytest.mark.parametrize("months", [None, [7, 8]])
 def test_enum_annual_parameters(enumeration_type, aoi_name, months):
     aoi_path = aoi_dir / f'{aoi_name}.geojson'
@@ -75,7 +75,7 @@ def test_enum_annual_parameters(enumeration_type, aoi_name, months):
                                       df_from_data)
 
 
-@pytest.mark.parametrize("aoi_name", ['aleutian', 'turkey', 'haiti', 'los_paredes_ca'])
+@pytest.mark.parametrize("aoi_name", ['aleutian', 'turkey', 'haiti', 'los_padres_ca'])
 @pytest.mark.parametrize("enumeration_type", ['tile'])
 def test_enum_annual_full_catalog(enumeration_type, aoi_name):
     aoi_path = aoi_dir / f'{aoi_name}.geojson'

@@ -18,7 +18,7 @@ coverage_data_dir = data_dir / 'coverage_data'
 aoi_dir = data_dir / 'aoi'
 
 
-@pytest.mark.parametrize("aoi_name", ['aleutian', 'turkey', 'haiti', 'los_paredes_ca'])
+@pytest.mark.parametrize("aoi_name", ['aleutian', 'turkey', 'haiti', 'los_padres_ca'])
 @pytest.mark.parametrize("min_date_per_path", [1, 2])
 def test_collect_tiles(aoi_name, min_date_per_path):
     coverage_path = coverage_data_dir / f'{aoi_name}_at_least_{min_date_per_path}.geojson'
@@ -38,7 +38,7 @@ def test_collect_tiles(aoi_name, min_date_per_path):
                                       df_coverage_tiles_data)
 
 
-@pytest.mark.parametrize("aoi_name", ['aleutian', 'turkey', 'haiti', 'los_paredes_ca'])
+@pytest.mark.parametrize("aoi_name", ['aleutian', 'turkey', 'haiti', 'los_padres_ca'])
 @pytest.mark.parametrize("dates_per_path", [1, 2])
 def test_get_coverage_tiles(aoi_name, dates_per_path):
 

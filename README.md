@@ -4,7 +4,7 @@ Uses `asf-search` to enumerate Sentinel-1 A/B pairs for interferograms.
 
 ![example](example.png)
 
-Also provides functions to check if a `S1-GUNW` exists in the ASF DAAC.
+Also provides functions to check if a [`S1-GUNW`](https://asf.alaska.edu/data-sets/derived-data-sets/sentinel-1-interferograms/) exists in the ASF DAAC.
 
 ## Install
 
