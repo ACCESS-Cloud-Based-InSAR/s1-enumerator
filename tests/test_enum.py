@@ -5,17 +5,11 @@ import pytest
 from geopandas import testing
 from s1_enumerator import distill_all_pairs, enumerate_ifgs
 
-from .paths import get_test_data_path
-
-data_dir = get_test_data_path()
-enum_dir = data_dir / 'enum_data'
-aoi_dir = data_dir / 'aoi'
-
 
 @pytest.mark.parametrize("aoi_name", ['aleutian', 'turkey', 'haiti', 'los_padres_ca'])
 @pytest.mark.parametrize("enumeration_type", ['tile', 'path'])
-def test_enum_annual(enumeration_type, aoi_name):
-    aoi_path = aoi_dir / f'{aoi_name}.geojson'
+def test_enum_annual(test_data_dir, enumeration_type, aoi_name):
+    aoi_path = test_data_dir / 'aoi' / f'{aoi_name}.geojson'
     aoi_df = gpd.read_file(aoi_path)
     aoi_geo = aoi_df.geometry.values[0]
 
@@ -36,16 +30,15 @@ def test_enum_annual(enumeration_type, aoi_name):
     df_test.drop(columns=['reference', 'secondary'], inplace=True)
 
     data_filename = f'{aoi_name}_annual_{enumeration_type}.geojson'
-    df_from_data = gpd.read_file(enum_dir / data_filename)
-    testing.assert_geodataframe_equal(df_test,
-                                      df_from_data)
+    df_from_data = gpd.read_file(test_data_dir / 'enum_data' / data_filename)
+    testing.assert_geodataframe_equal(df_test, df_from_data)
 
 
 @pytest.mark.parametrize("enumeration_type", ['tile', 'path'])
 @pytest.mark.parametrize("aoi_name", ['los_padres_ca'])
 @pytest.mark.parametrize("months", [None, [7, 8]])
-def test_enum_annual_parameters(enumeration_type, aoi_name, months):
-    aoi_path = aoi_dir / f'{aoi_name}.geojson'
+def test_enum_annual_parameters(test_data_dir, enumeration_type, aoi_name, months):
+    aoi_path = test_data_dir / 'aoi' / f'{aoi_name}.geojson'
     aoi_df = gpd.read_file(aoi_path)
     aoi_geo = aoi_df.geometry.values[0]
 
@@ -70,6 +63,6 @@ def test_enum_annual_parameters(enumeration_type, aoi_name, months):
     fixed_month_str = '' if months is None else 'fixed_months_'
 
     data_filename = f'{aoi_name}_annual_{enumeration_type}_{fixed_month_str}137.geojson'
-    df_from_data = gpd.read_file(enum_dir / data_filename)
+    df_from_data = gpd.read_file(test_data_dir / 'enum_data' / data_filename)
     testing.assert_geodataframe_equal(df_test,
                                       df_from_data)
