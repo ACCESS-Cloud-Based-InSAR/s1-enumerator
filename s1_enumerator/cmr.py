@@ -30,6 +30,9 @@ def approximate_cmr_lookup(reference_date: str,
                              )
     df = format_results_for_sent1(results)
 
+    if df.empty:
+        return df
+
     df['secondary_date_str'] = df.sceneName.map(extract_secondary_date)
 
     # Calculating areas in lat/lon coordinates prompts shapely warning
