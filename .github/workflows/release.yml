@@ -18,7 +18,7 @@ jobs:
         uses: docker://antonyurchenko/git-release:v3.5.0
         env:
           GITHUB_TOKEN: {{'${{ secrets.TOOLS_BOT_PAK }}'}}
-          RELEASE_NAME_PREFIX: "s1-gunw "
+          RELEASE_NAME_PREFIX: "s1-enumerator "
           ALLOW_TAG_PREFIX: true
 
       - name: Attempt fast-forward develop from main
