@@ -1,18 +1,54 @@
-name: Tag version
+name: Test and Tag
 
 on:
   push:
     branches:
       - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
 
 jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: extractions/netrc@v1
+        with:
+          machine: urs.earthdata.nasa.gov
+          username: ${{ secrets.EARTHDATA_USERNAME }}
+          password: ${{ secrets.EARTHDATA_PASSWORD }}
+
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          mamba-version: "*"
+          python-version: ${{ matrix.python-version }}
+          activate-environment: s1-enumerator
+          environment-file: environment.yml
+
+      - name: Pytest in conda environment
+        shell: bash -l {0}
+        run: |
+          python -m pip install .
+          pytest .
+
+
   tag-version:
     runs-on: ubuntu-latest
+    needs: pytest
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          token: {{'${{ secrets.TOOLS_BOT_PAK }}'}}
+          token: {{'${{ secrets.ACCESS_GITHUB_TOKEN }}'}}
 
       - name: Get associated PR
         uses: helaili/github-graphql-action@2.0.1
