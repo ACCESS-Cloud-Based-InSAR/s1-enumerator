@@ -12,12 +12,12 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          token: {{'${{ secrets.TOOLS_BOT_PAK }}'}}
+          token: ${{ secrets.ACCESS_GITHUB_TOKEN }}
 
       - name: Create Release
         uses: docker://antonyurchenko/git-release:v3.5.0
         env:
-          GITHUB_TOKEN: {{'${{ secrets.TOOLS_BOT_PAK }}'}}
+          GITHUB_TOKEN: ${{ secrets.ACCESS_GITHUB_TOKEN }}
           RELEASE_NAME_PREFIX: "s1-enumerator "
           ALLOW_TAG_PREFIX: true
 
@@ -29,15 +29,15 @@ jobs:
           git push
 
       - name: Open PR to bring main back to develop
-        if: {{'${{ failure() }}'}}
+        if: ${{ failure() }}
         uses: repo-sync/pull-request@v2
         with:
           source_branch: main
           destination_branch: develop
-          pr_title: Pulling {{'${{ github.ref }}'}} into default
+          pr_title: Pulling ${{ github.ref }} into default
           pr_body: Fast-forward of main to default failed!
-          pr_assignee: {{'${{ github.actor }}'}}
+          pr_assignee: ${{ github.actor }}
           pr_label: tools-bot
           pr_draft: false
           pr_allow_empty: true
-          github_token: {{'${{ secrets.TOOLS_BOT_PAK }}'}}
+          github_token: ${{ secrets.ACCESS_GITHUB_TOKEN }}
