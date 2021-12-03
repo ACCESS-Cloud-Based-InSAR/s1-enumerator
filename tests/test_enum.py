@@ -1,61 +1,68 @@
 import datetime
 
 import geopandas as gpd
+import pytest
 from geopandas import testing
-from s1_enumerator import (distill_all_pairs, enumerate_by_path,
-                           enumerate_by_tile)
-from shapely.geometry import Point
-
-from .paths import get_test_data_path
+from s1_enumerator import distill_all_pairs, enumerate_ifgs
 
 
-def test_enum_path():
-    # Over Los Padres National Forest, CA
-    point = Point(-120.0048, 34.8923)
-    aoi = point.buffer(1)
+@pytest.mark.parametrize("aoi_name", ['aleutian', 'turkey', 'haiti', 'los_padres_ca'])
+@pytest.mark.parametrize("enumeration_type", ['tile', 'path'])
+def test_enum_annual(test_data_dir, enumeration_type, aoi_name):
+    aoi_path = test_data_dir / 'aoi' / f'{aoi_name}.geojson'
+    aoi_df = gpd.read_file(aoi_path)
+    aoi_geo = aoi_df.geometry.values[0]
 
-    num_neighbors = 3
-    ifg_pairs_path = enumerate_by_path(aoi,
-                                       min_reference_date=datetime.datetime(2021, 1, 1),
-                                       min_days_backward=0,
-                                       num_neighbors=num_neighbors,
-                                       )
-    N = len(ifg_pairs_path)
-    remainder = N % num_neighbors
-    assert(remainder == 0)
+    ifg_pairs_tiles = enumerate_ifgs(aoi_geo,
+                                     min_reference_date=datetime.datetime(2021, 7, 9),
+                                     enumeration_type=enumeration_type,
+                                     min_days_backward=364,
+                                     num_neighbors_ref=3,
+                                     num_neighbors_sec=2,
+                                     temporal_window_days=60,
+                                     min_ref_tile_overlap_perc=.1,
+                                     min_tile_aoi_overlap_km2=1e3,
+                                     minimum_path_intersection_km2=1e3,
+                                     entire_s1_catalog=False
+                                     )
+    df_pairs = distill_all_pairs(ifg_pairs_tiles)
+    df_test = df_pairs.sort_values(by=['path_number', 'reference_date']).reset_index(drop=True)
+    df_test.drop(columns=['reference', 'secondary'], inplace=True)
 
-    df_pairs = distill_all_pairs(ifg_pairs_path)
-    df_pairs = df_pairs.sort_values(by=['path_number', 'reference_date']).reset_index(drop=True)
-    df_pairs.drop(columns=['reference', 'secondary'], inplace=True)
-
-    data_path = get_test_data_path()
-    df_pairs_data = gpd.read_file(data_path / 'enum_path.geojson')
-
-    testing.assert_geodataframe_equal(df_pairs,
-                                      df_pairs_data)
+    data_filename = f'{aoi_name}_annual_{enumeration_type}.geojson'
+    df_from_data = gpd.read_file(test_data_dir / 'enum_data' / data_filename)
+    testing.assert_geodataframe_equal(df_test, df_from_data)
 
 
-def test_enum_tile():
-    # Over Los Padres National Forest, CA
-    point = Point(-120.0048, 34.8923)
-    aoi = point.buffer(1)
+@pytest.mark.parametrize("enumeration_type", ['tile', 'path'])
+@pytest.mark.parametrize("aoi_name", ['los_padres_ca'])
+@pytest.mark.parametrize("months", [None, [7, 8]])
+def test_enum_annual_parameters(test_data_dir, enumeration_type, aoi_name, months):
+    aoi_path = test_data_dir / 'aoi' / f'{aoi_name}.geojson'
+    aoi_df = gpd.read_file(aoi_path)
+    aoi_geo = aoi_df.geometry.values[0]
 
-    num_neighbors = 3
-    ifg_pairs_tile = enumerate_by_tile(aoi,
-                                       min_reference_date=datetime.datetime(2021, 7, 9),
-                                       min_days_backward=365,
-                                       num_neighbors=num_neighbors,
-                                       )
-    N = len(ifg_pairs_tile)
-    remainder = N % num_neighbors
-    assert(remainder == 0)
+    ifg_pairs_tiles = enumerate_ifgs(aoi_geo,
+                                     min_reference_date=datetime.datetime(2021, 7, 9),
+                                     enumeration_type=enumeration_type,
+                                     min_days_backward=364,
+                                     num_neighbors_ref=3,
+                                     num_neighbors_sec=2,
+                                     temporal_window_days=60,
+                                     min_ref_tile_overlap_perc=.1,
+                                     min_tile_aoi_overlap_km2=1e3,
+                                     minimum_path_intersection_km2=1e3,
+                                     path_numbers=[137],
+                                     months=months,
+                                     entire_s1_catalog=False
+                                     )
+    df_pairs = distill_all_pairs(ifg_pairs_tiles)
+    df_test = df_pairs.sort_values(by=['path_number', 'reference_date']).reset_index(drop=True)
+    df_test.drop(columns=['reference', 'secondary'], inplace=True)
 
-    df_pairs = distill_all_pairs(ifg_pairs_tile)
-    df_pairs = df_pairs.sort_values(by=['path_number', 'reference_date']).reset_index(drop=True)
-    df_pairs.drop(columns=['reference', 'secondary'], inplace=True)
+    fixed_month_str = '' if months is None else 'fixed_months_'
 
-    data_path = get_test_data_path()
-    df_pairs_data = gpd.read_file(data_path / 'enum_tile.geojson')
-
-    testing.assert_geodataframe_equal(df_pairs,
-                                      df_pairs_data)
+    data_filename = f'{aoi_name}_annual_{enumeration_type}_{fixed_month_str}137.geojson'
+    df_from_data = gpd.read_file(test_data_dir / 'enum_data' / data_filename)
+    testing.assert_geodataframe_equal(df_test,
+                                      df_from_data)

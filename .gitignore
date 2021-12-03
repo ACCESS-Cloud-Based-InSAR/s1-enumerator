@@ -67,6 +67,7 @@ __pycache__/
 notebooks/*.geojson
 s1_enumerator/*.geojson
 ./*.geojson
+notebooks/generate_test_data/**/*.geojson
 
 # Ignore logs
 *.log

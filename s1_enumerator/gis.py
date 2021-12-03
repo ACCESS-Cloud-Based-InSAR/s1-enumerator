@@ -51,6 +51,37 @@ def get_intersection_area_km2(df: gpd.GeoDataFrame,
     return km2_area
 
 
+def filter_by_intersection_km2(df: gpd.GeoDataFrame,
+                               geo: Polygon,
+                               min_km2_overlap) -> gpd.GeoDataFrame:
+
+    intersection_km2 = get_intersection_area_km2(df, geo)
+    intersection_index = intersection_km2 > min_km2_overlap
+    df_f = df[intersection_index].reset_index(drop=True)
+    return df_f
+
+
+def filter_by_intersection_percent(df: gpd.GeoDataFrame,
+                                   geo: Polygon,
+                                   min_percent_overlap,
+                                   relative_to='geometry') -> gpd.GeoDataFrame:
+    """Intersection area relative to dataframe or geometry"""
+
+    df_utm, geo_utm = align_by_utm(df, geo)
+
+    if relative_to == 'geometry':
+        denominator = geo_utm.area
+    elif relative_to == 'dataframe':
+        denominator = df_utm.geometry.area
+    else:
+        raise ValueError('Needs to be dataframe or geometry')
+
+    intersection_percent = df_utm.geometry.intersection(geo_utm).area / denominator
+    intersection_index = intersection_percent >= min_percent_overlap
+    df_f = df[intersection_index].reset_index(drop=True)
+    return df_f
+
+
 def get_aoi_dataframe(aoi: Polygon) -> gpd.GeoDataFrame:
     df_aoi = gpd.GeoDataFrame(geometry=[aoi],
                               crs=CRS.from_epsg(4326))

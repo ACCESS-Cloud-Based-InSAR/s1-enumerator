@@ -21,7 +21,9 @@ def format_results_for_sent1(results: list) -> gpd.GeoDataFrame:
     df['stopTime'] = pd.to_datetime(df.stopTime)
     df['start_date'] = pd.to_datetime(df.startTime.dt.date)
     df['start_date_str'] = df.start_date.dt.date.map(str)
-    df.sort_values(by=['startTime', 'pathNumber'], inplace=True)
+    df['pathNumber'] = df['pathNumber'].astype(int)
+    df.drop(columns=['browse'], inplace=True)
+    df = df.sort_values(by=['startTime', 'pathNumber']).reset_index(drop=True)
 
     return df
 
