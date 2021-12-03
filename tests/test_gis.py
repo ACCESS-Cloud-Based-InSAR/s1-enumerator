@@ -3,12 +3,9 @@ import numpy as np
 from rasterio.crs import CRS
 from s1_enumerator.gis import get_intersection_area_km2
 
-from .paths import get_test_data_path
 
-
-def test_km2_intersection():
-    data_dir = get_test_data_path()
-    utm_dir = data_dir / 'utm_data'
+def test_km2_intersection(test_data_dir):
+    utm_dir = test_data_dir / 'utm_data'
 
     left_path = utm_dir / 'left.geojson'
     right_path = utm_dir / 'right.geojson'
