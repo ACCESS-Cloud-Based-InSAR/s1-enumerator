@@ -53,7 +53,7 @@ jobs:
       - name: Get associated PR
         uses: helaili/github-graphql-action@2.0.1
         env:
-          GITHUB_TOKEN: ${{ secrets.TOOLS_BOT_PAK }}
+          GITHUB_TOKEN: ${{ secrets.ACCESS_GITHUB_TOKEN }}
         with:
           query: .github/queries/associated-pr.query.yml
           outputFile: pr.json
@@ -64,7 +64,7 @@ jobs:
       - name: Get PR labels
         uses: helaili/github-graphql-action@2.0.1
         env:
-          GITHUB_TOKEN: ${{ secrets.TOOLS_BOT_PAK }}
+          GITHUB_TOKEN: ${{ secrets.ACCESS_GITHUB_TOKEN }}
         with:
           query: .github/queries/pr-labels.query.yml
           outputFile: labels.json
