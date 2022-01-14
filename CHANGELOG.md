@@ -12,3 +12,11 @@ and uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Initial release of s1-enumerator, a package for enumerating Sentinel-1 A/B pairs
 for interferograms:
  * `s1_enumerator`, a `pip` installable python package that runs the enumeration
+
+
+## [0.1.0]
+
+Small updates to improve use:
+ * add a `hash-id` when distilling data for API-submission. The hash-id is lossy
+ hash derived from concantenation of reference and secondary SLC ids to more easily
+ de-duplicate jobs.
