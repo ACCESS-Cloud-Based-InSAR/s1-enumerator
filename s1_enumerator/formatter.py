@@ -1,9 +1,19 @@
+import hashlib
+import json
 from warnings import warn
 
 import geopandas as gpd
 import pandas as pd
 from rasterio.crs import CRS
 from shapely.geometry import shape
+
+
+def get_gunw_hash_id(reference_ids: list, secondary_ids: list) -> str:
+    all_ids = json.dumps([' '.join(sorted(reference_ids)),
+                          ' '.join(sorted(secondary_ids))
+                          ]).encode('utf8')
+    hash_id = hashlib.md5(all_ids).hexdigest()
+    return hash_id
 
 
 def format_results_for_sent1(results: list) -> gpd.GeoDataFrame:
@@ -33,8 +43,11 @@ def distill_one_pair(pair: dict) -> dict:
     df_sec = pair['secondary']
     ref_geo = df_ref.geometry.unary_union
     sec_geo = df_sec.geometry.unary_union
-    data = {'reference': df_ref.sceneName.tolist(),
-            'secondary': df_sec.sceneName.tolist(),
+    reference = df_ref.sceneName.tolist()
+    secondary = df_sec.sceneName.tolist()
+    data = {'reference': reference,
+            'secondary': secondary,
+            'hash_id': get_gunw_hash_id(reference, secondary),
             'reference_date': str(df_ref.start_date.min().date()),
             'secondary_date': str(df_sec.start_date.min().date()),
             'path_number': int(df_ref.pathNumber.tolist()[0]),

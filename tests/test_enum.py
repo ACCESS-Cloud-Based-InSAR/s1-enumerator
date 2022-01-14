@@ -27,7 +27,7 @@ def test_enum_annual(test_data_dir, enumeration_type, aoi_name):
                                      )
     df_pairs = distill_all_pairs(ifg_pairs_tiles)
     df_test = df_pairs.sort_values(by=['path_number', 'reference_date']).reset_index(drop=True)
-    df_test.drop(columns=['reference', 'secondary'], inplace=True)
+    df_test.drop(columns=['reference', 'secondary', 'hash_id'], inplace=True)
 
     data_filename = f'{aoi_name}_annual_{enumeration_type}.geojson'
     df_from_data = gpd.read_file(test_data_dir / 'enum_data' / data_filename)
@@ -58,7 +58,7 @@ def test_enum_annual_parameters(test_data_dir, enumeration_type, aoi_name, month
                                      )
     df_pairs = distill_all_pairs(ifg_pairs_tiles)
     df_test = df_pairs.sort_values(by=['path_number', 'reference_date']).reset_index(drop=True)
-    df_test.drop(columns=['reference', 'secondary'], inplace=True)
+    df_test.drop(columns=['reference', 'secondary', 'hash_id'], inplace=True)
 
     fixed_month_str = '' if months is None else 'fixed_months_'
 
