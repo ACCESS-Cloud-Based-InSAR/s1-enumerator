@@ -8,7 +8,7 @@ Also provides functions to check if a [`S1-GUNW`](https://asf.alaska.edu/data-se
 
 ## Install
 
-`pip install s1-enumerator`
+`pip install .`
 
 Requires `asf_search`, `geopandas`, `rasterio`, `requests`, and `tqdm`. See the `environment.yml`.
 
