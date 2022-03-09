@@ -38,7 +38,10 @@ def distill_one_pair(pair: dict) -> dict:
             'reference_date': str(df_ref.start_date.min().date()),
             'secondary_date': str(df_sec.start_date.min().date()),
             'path_number': int(df_ref.pathNumber.tolist()[0]),
-            'geometry': ref_geo.intersection(sec_geo).buffer(1e-5)}
+            'geometry': ref_geo.intersection(sec_geo).buffer(1e-5),
+            'startTime': df_sec.startTime.tolist()[0],
+            'stopTime': df_sec.stopTime.tolist()[-1],
+            'fileID': ''.join(df_ref.fileID.tolist()[0])}
     return data
 
 
