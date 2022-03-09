@@ -107,7 +107,7 @@ def get_s1_coverage_tiles(aoi: Polygon,
 
 def get_s1_stack_by_poly_and_path(geometry: Polygon,
                                   path_num: Union[int, str],
-                                  max_results: int = 1_000) -> gpd.GeoDataFrame:
+                                  max_results: int = 100_000) -> gpd.GeoDataFrame:
     results = asf.geo_search(platform=[asf.PLATFORM.SENTINEL1],
                              intersectsWith=geometry.wkt,
                              maxResults=max_results,
