@@ -69,5 +69,8 @@ s1_enumerator/*.geojson
 ./*.geojson
 notebooks/generate_test_data/**/*.geojson
 
+!notebooks/Aleutians_pathNumber95.geojson
+!notebooks/Aleutians_pathNumber124.geojson
+
 # Ignore logs
 *.log
