@@ -12,3 +12,4 @@ and uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Initial release of s1-enumerator, a package for enumerating Sentinel-1 A/B pairs
 for interferograms:
  * `s1_enumerator`, a `pip` installable python package that runs the enumeration
+ * update installation instructions for consistency vis-a-vis other repos

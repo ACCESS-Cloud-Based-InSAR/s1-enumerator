@@ -26,4 +26,5 @@ dependencies:
   - tqdm
   - requests
   - asf_search
-
+  - pip:
+      - hyp3-sdk
