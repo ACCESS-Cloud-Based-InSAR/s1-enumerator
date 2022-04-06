@@ -8,8 +8,10 @@ Also provides functions to check if a [`S1-GUNW`](https://asf.alaska.edu/data-se
 
 ## Install
 
-1. `conda env update -n s1-enumerator --file environment.yml` (or use [`mamba`](https://github.com/mamba-org/mamba) to speed install up)
-2. `pip install .`
+1. Clone this repo `git clone https://github.com/ACCESS-Cloud-Based-InSAR/s1-enumerator.git`
+2. Navigate with your terminal to the repo.
+3. Create a new environment and install requirements using `conda env update -n s1-enumerator --file environment.yml` (or use [`mamba`](https://github.com/mamba-org/mamba) to speed install up)
+4. Install the package from cloned repo using `pip install .`
 
 Requires `asf_search`, `geopandas`, `rasterio`, `requests`, `tqdm`, and `hyp3-sdk`. See the `environment.yml`.
 
