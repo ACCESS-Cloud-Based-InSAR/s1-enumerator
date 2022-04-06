@@ -8,9 +8,10 @@ Also provides functions to check if a [`S1-GUNW`](https://asf.alaska.edu/data-se
 
 ## Install
 
-`pip install .`
+1. `conda env update -n s1-enumerator --file environment.yml` (or use [`mamba`](https://github.com/mamba-org/mamba) to speed install up)
+2. `pip install .`
 
-Requires `asf_search`, `geopandas`, `rasterio`, `requests`, and `tqdm`. See the `environment.yml`.
+Requires `asf_search`, `geopandas`, `rasterio`, `requests`, `tqdm`, and `hyp3-sdk`. See the `environment.yml`.
 
 ## Usage
 
